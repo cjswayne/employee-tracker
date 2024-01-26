@@ -35,9 +35,6 @@ async function seed() {
             [employees]
             )
             console.log('Users Seeded');
-
-
-
         
     } catch(err) {
         console.log(err);
