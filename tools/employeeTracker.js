@@ -170,14 +170,8 @@ class Tracker {
     // Method to delete department
     static async deleteDepartment() {
         try {
-            const choices = await this.listDepts();
-            const { department } = await inquirer.prompt({
-                "type":"list",
-                "name":"department",
-                "message":"Choose Department to Delete",
-                "choices": choices
-            })
-            await db.query('DELETE FROM departments WHERE name = ?;', [department])
+            const { department } = await inquirer.prompt(prompts.deleteDeptQuestion)
+            await db.query('DELETE FROM departments WHERE id = ?;', [department])
             await this.viewAllDepartments();
             console.log('Department Deleted.');    
         } catch(err) {
@@ -187,14 +181,25 @@ class Tracker {
 
     // Method to delete role
     static async deleteRole() {
-        // const [results] = await db.query(``);
-        // Implementation
+        try {
+            const { role } = await inquirer.prompt(prompts.deleteRoleQuestion)
+            await db.query('DELETE FROM roles WHERE id = ?;', [role])
+            console.log('Role Deleted.');    
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     // Method to delete employee
     static async deleteEmployee() {
-        // Implementation
-        // const [results] = await db.query(``);
+
+    try{
+        const { employee } = await inquirer.prompt(prompts.deleteEmployeeQuestion)
+        await db.query('DELETE FROM employees WHERE id = ?;', [employee])
+        console.log('Employee Deleted.');    
+    } catch(err) {
+        console.log(err);
+    }
     }
 
     // method to exit
