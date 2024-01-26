@@ -8,4 +8,4 @@ const db = mysql.createConnection({
 }).promise();
 
 
-modules.exports = db;
+module.exports = db;
