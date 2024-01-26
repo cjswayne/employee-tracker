@@ -2,7 +2,6 @@ const db = require('../db/connections.js')
 const inquirer = require("inquirer");
 const prompts = require("../lib/prompts.js");
 
-
 class Tracker {
     // Method to view all departments
     static async viewAllDepartments() {
@@ -18,14 +17,15 @@ class Tracker {
     // Method to view all roles
     static async viewAllRoles() {
         try {
-            const [results] = await db.query(`SELECT
-         r.id, 
-         r.title, 
-         r.salary,
-         d.name 
-         FROM roles r
-         JOIN departments d ON r.department_id = d.id;`);
-
+            const [results] = await db.query(`
+            SELECT
+                r.id, 
+                r.title, 
+                r.salary,
+                d.name 
+            FROM roles r
+            JOIN departments d ON r.department_id = d.id;
+         `);
             console.table(results);
         } catch (err) {
             console.log(err);
@@ -176,7 +176,7 @@ class Tracker {
     static async updateAnEmployeeRole() {
         try {
             const { employeeID, roleID } = await inquirer.prompt(prompts.updateEmployeeRoleQuestions)
-            console.log(employeeID, roleID)
+
             await db.query('UPDATE employees SET role_id = ? WHERE id = ?;', [roleID, employeeID]);
 
             console.log('Employee Updated');
@@ -190,7 +190,7 @@ class Tracker {
     static async updateEmployeeManager() {
         try {
             const { employeeID, manager_id } = await inquirer.prompt(prompts.updateEmployeeManagerQuestions)
-            console.log(employeeID, manager_id)
+
             await db.query('UPDATE employees SET manager_id = ? WHERE id = ?;', [manager_id, employeeID]);
 
             console.log('Employee Updated');
@@ -215,8 +215,8 @@ class Tracker {
     // Method to delete role
     static async deleteRole() {
         try {
-            const { role } = await inquirer.prompt(prompts.deleteRoleQuestion)
-            await db.query('DELETE FROM roles WHERE id = ?;', [role])
+            const { role_id } = await inquirer.prompt(prompts.deleteRoleQuestion)
+            await db.query('DELETE FROM roles WHERE id = ?;', [role_id])
             console.log('Role Deleted.');
         } catch (err) {
             console.log(err);
@@ -225,7 +225,6 @@ class Tracker {
 
     // Method to delete employee
     static async deleteEmployee() {
-
         try {
             const { employee } = await inquirer.prompt(prompts.deleteEmployeeQuestion)
             await db.query('DELETE FROM employees WHERE id = ?;', [employee])
