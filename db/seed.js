@@ -35,6 +35,9 @@ async function seed() {
             [employees]
             )
             console.log('Users Seeded');
+
+
+
         
     } catch(err) {
         console.log(err);
@@ -49,6 +52,8 @@ async function seed() {
         JOIN roles ON employees.role_id = roles.id
         JOIN departments ON roles.department_id = departments.id;`);
         console.table(rows);
+
+        process.exit();
     } catch (err) {
         console.log(err);
     }
